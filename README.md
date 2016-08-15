@@ -1,2 +1,2 @@
-# connected-nx-tutorial
-Repository for code and notebooks for the a NetworkX Tutorial
+# Connected: A Social Network Analysis Tutorial with NetworkX 
+Repository for code and notebooks for the NetworkX Tutorial
