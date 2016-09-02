@@ -1,0 +1,42 @@
+has to be converted into DL format 
+information
+ 4 , 10 , 10 ,N,NB
+COUN,COMM,EDUC,INDU,MAYR,WRO,NEWS,UWAY,WELF,WEST
+0 1 0 0 1 0 1 0 1 0 
+1 0 1 1 1 0 1 1 1 0 
+0 1 0 1 1 1 1 0 0 1 
+1 1 0 0 1 0 1 0 0 0 
+1 1 1 1 0 0 1 1 1 1 
+0 0 1 0 0 0 1 0 1 0 
+0 1 0 1 1 0 0 0 0 0 
+1 1 0 1 1 0 1 0 1 0 
+0 1 0 0 1 0 1 0 0 0 
+1 1 1 0 1 0 1 0 0 0 
+
+money
+ 4 , 10 , 10 ,N,NB
+COUN,COMM,EDUC,INDU,MAYO,WRO,NEWS,UWAY,WELF,WEST
+ 0  0  1  0  1  0  0  1  1  1 
+ 0  0  1  0  0  0  0  0  0  0 
+ 0  0  0  0  0  0  0  1  0  0 
+ 0  1  1  0  0  0  1  1  1  0 
+ 0  1  1  0  0  0  0  1  1  0 
+ 0  0  0  0  0  0  0  0  0  0 
+ 0  1  0  0  0  0  0  1  0  0 
+ 0  0  0  0  0  0  0  0  1  1 
+ 0  0  1  0  0  0  0  1  0  0 
+ 0  0  0  0  0  0  0  0  0  0 
+
+ 4 , 10 , 3 ,N,LM
+ID,SECTOR,RATING
+ 1	GOV 	5.80
+ 2	VOL	5.80
+ 3	GOV	4.75
+ 4	PVT	5.38
+ 5	GOV	5.86
+ 6	VOL	2.50
+ 7	PVT	6.40
+ 8	VOL	5.94
+ 9	GOV	4.60
+10	VOL	3.50
+

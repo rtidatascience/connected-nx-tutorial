@@ -9,6 +9,14 @@ If you've obtained python through Anaconda, you should be set. In essence, we ne
   - Conda package manager
 - Packages listed below
 
+This is an intermediate level tutorial, so we expect  prior knowledge of:
+- Python types & data structures
+- Installing python packages through `pip` or `conda`
+- Data Science Packages:
+  - pandas
+  - numpy
+  - matplotlib
+
 
 ### Packages and Environment
 A Conda Environment is used to organize packages and their correct versions. Package details are contained in the `environment.yaml` file included. To create an environment with conda use:
