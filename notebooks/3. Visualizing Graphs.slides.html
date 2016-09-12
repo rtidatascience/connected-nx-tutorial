@@ -11841,7 +11841,7 @@ a.anchor-link {
 </ul>
 <hr>
 <p>Vizualizing networks is a complicated problem -- how do you position the nodes and edges in a way such that no nodes overlap, connected nodes are near each other, none of the labels overlap? Typically we use what is called a <em>layout</em> to plot or visualize networks. A layout is an algorithm used to position nodes and edges on a plot automatically in aesthetically and informationally satisfactory ways.</p>
-<p>There are several different layout algorithms, but the most common is what's called <em>force-directed</em>. These layout algorithms are based off of physical repulsion and spring systems. In general, the rule for force-directed layouts are: Repel all nodes, and model connections between nodes as 'springs', with the result that more connected nodes will be closer together.</p>
+<p>There are several different layout algorithms, but the most common is a <em>force-directed</em> layout. These layout algorithms are based off of physical repulsion and spring systems. In general, the rule for force-directed layouts is: repel all nodes, and model connections between nodes as 'springs', with the result that more connected nodes will be closer together.</p>
 <p>One important issue is that each layout typically has random initial conditions. Running a plot function twice will return two different plots, both following the rules of the algorithm, but differing due to the initial conditions of the layout.</p>
 
 </div>
@@ -13208,7 +13208,8 @@ QIABIIEAA0ACAQaABAIMAAl+A5ROD7P9yQvLAAAAAElFTkSuQmCC
 
 <span class="c1"># plot nodes, labels, and edges with options</span>
 <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_nodes</span><span class="p">(</span><span class="n">GA</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">layout</span><span class="p">,</span> <span class="n">node_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
-<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span><span class="n">GA</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">layout</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;dotted&#39;</span><span class="p">,</span> <span class="n">edge_color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">)</span>
+<span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_edges</span><span class="p">(</span><span class="n">GA</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">layout</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;dotted&#39;</span><span class="p">,</span>
+                       <span class="n">edge_color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">)</span>
 <span class="n">nx</span><span class="o">.</span><span class="n">draw_networkx_labels</span><span class="p">(</span><span class="n">GA</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">layout</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span> <span class="c1"># display</span>
@@ -14521,7 +14522,7 @@ YII=
 </div></section><section>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[149]:</div>
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">create_color_map</span><span class="p">(</span><span class="n">Graph</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">seaborn_palette</span><span class="o">=</span><span class="s2">&quot;colorblind&quot;</span><span class="p">):</span>
@@ -14536,7 +14537,7 @@ YII=
     <span class="n">palette</span> <span class="o">=</span> <span class="n">color_palette</span><span class="p">(</span><span class="n">seaborn_palette</span><span class="p">,</span> <span class="n">num_values</span><span class="p">)</span><span class="o">.</span><span class="n">as_hex</span><span class="p">()</span>
 
     <span class="c1"># create a mapping of attribute to color</span>
-    <span class="n">color_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">status_set</span><span class="p">,</span> <span class="n">palette</span><span class="p">))</span>
+    <span class="n">color_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">attributes_unique</span><span class="p">,</span> <span class="n">palette</span><span class="p">))</span>
 
     <span class="c1"># map the attribute for each node to the color it represents</span>
     <span class="n">node_colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">color_map</span><span class="p">[</span><span class="n">attribute</span><span class="p">]</span> <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="n">attributes</span><span class="p">]</span>
@@ -15882,11 +15883,12 @@ fLmDMjyU4aEMD/UGoiJIPYJZlGgAAAAASUVORK5CYII=
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<hr>
-<h2 id="Optional:-Other-Options">Optional: Other Options<a class="anchor-link" href="#Optional:-Other-Options">&#182;</a></h2><ul>
+<h2 id="Other-Visualization-Options">Other Visualization Options<a class="anchor-link" href="#Other-Visualization-Options">&#182;</a></h2><ul>
 <li><a href="https://plot.ly/ipython-notebooks/network-graphs/#">Plot.ly</a></li>
 <li><a href="https://bl.ocks.org/mbostock/4062045">d3</a></li>
 <li><a href="https://gephi.org/">Gephi</a></li>
+<li><a href="https://github.com/idekerlab/vizbi-2015">Cytoscape / cyREST</a></li>
+<li><a href="http://igraph.org/python/">python-igraph</a></li>
 </ul>
 
 </div>
