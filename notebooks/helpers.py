@@ -21,10 +21,10 @@ def create_color_map(G, attribute, seaborn_palette="colorblind"):
 
     return node_colors, color_map, palette
 
-def map_communities(G, ga_communities):
+def map_communities(G, communities):
     community_map = {}
     for node in G.nodes():
-        for i, comm in enumerate(ga_communities):
+        for i, comm in enumerate(communities):
             if node in comm:
                 community_map[node] = i
         if community_map.get(node, None) is None:
