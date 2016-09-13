@@ -9,7 +9,7 @@ If you've obtained python through Anaconda, you should be set. In essence, we ne
   - Conda package manager
 - Packages listed below
 
-This is an intermediate level tutorial, so we expect  prior knowledge of:
+This is an intermediate level tutorial, so we expect prior knowledge of:
 - Python types & data structures
 - Installing python packages through `pip` or `conda`
 - Data Science Packages:
@@ -17,12 +17,13 @@ This is an intermediate level tutorial, so we expect  prior knowledge of:
   - numpy
   - matplotlib
 
-
-### Packages and Environment
-A Conda Environment is used to organize packages and their correct versions. Package details are contained in the `environment.yaml` file included. To create an environment with conda use:
+## Installation:
 
 ```
-conda env create -f environment.yml
+$ git clone https://github.com/rtidatascience/connected-nx-tutorial.git
+$ cd connected-nx-tutorial
+$ conda env create -f environment.yml
+$ source activate connected
 ```
 
 Reference: [Conda Environments](http://conda.pydata.org/docs/using/envs.html)
