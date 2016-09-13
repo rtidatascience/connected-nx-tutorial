@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
-<title>4. Centrality slides</title>
+<title>5. Link Prediction slides</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -1725,29 +1725,27 @@ div.output_prompt {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="centrality">Centrality</h1>
+<h1 id="link-prediction">Link Prediction</h1>
 <ul>
-<li>Definition of Centrality</li>
-<li>Compare and contrast popular centrality measures on dataset<ul>
-<li>Degree</li>
-<li>Closeness</li>
-<li>Betweenness</li>
-<li>Eigenvector</li>
+<li>Definition of Link Prediction</li>
+<li>Perform link prediction on dataset<ul>
+<li>Jaccard coefficient</li>
+<li>Preferential Attachment</li>
 </ul>
 </li>
 </ul>
-<p><img width="500" src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Graph_betweenness.svg/2000px-Graph_betweenness.svg.png"></p>
+<p><img src="https://content.linkedin.com/content/dam/engineering/en-us/blog/migrated/link_prediction.jpg" alt=""></p>
 </div>
 </div>
 </div></section><section>
     
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class="highlight"><pre><span class="kn">import</span> <span class="nn">networkx</span> <span class="kn">as</span> <span class="nn">nx</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span> <span class="c"># for plotting graphs</span>
 <span class="o">%</span><span class="k">matplotlib</span> <span class="n">inline</span>
 </pre></div>
 
@@ -1759,7 +1757,7 @@ div.output_prompt {
     
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class="highlight"><pre><span class="n">GA</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">read_gexf</span><span class="p">(</span><span class="s">&#39;../data/ga_graph.gexf&#39;</span><span class="p">)</span>
@@ -1770,6 +1768,26 @@ div.output_prompt {
 </div>
 
 </div>
+    </div><div style=display:none>
+    
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="link-prediction">Link Prediction</h2>
+<p>The idea of link prediction was first proposed by <a href="https://www.cs.cornell.edu/home/kleinber/link-pred.pdf">Liben-Nowell and Kleinberg in 2004</a> as the following question:</p>
+<blockquote>
+<p>&quot;Given a snapshot of a social network, can we infer which new interactions among its members are likely to occur in the near future?&quot;</p>
+</blockquote>
+<p>It&#39;s an inticing idea and has led to many interesting developments in the network literature. For our example, the question could be rephrased as:</p>
+<blockquote>
+<p>&quot;Given a snapshot of the Grey&#39;s Anatomy relationship network, can we infer which new relationships are likely to occur in the near future?&quot;</p>
+</blockquote>
+<p>Sounds awesome, but how does it work? </p>
+</div>
+</div>
+</div>
     </div></section>
     </section><section>
     <section>
@@ -1779,786 +1797,54 @@ div.output_prompt {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="degree-centrality">Degree Centrality</h2>
-<p>The <strong>degree</strong> of a node is the number of other nodes to which it is connected. </p>
-<p><img src="https://www.openabm.org/files/books/1928/fig102.png" alt=""></p>
-<p>NetworkX&#39;s degree centrality is calculated by taking the degree of the node and dividing by <code>n-1</code> where where <code>n</code> is the number of nodes in <code>G</code>.</p>
-<p>$$ {C_D (u)} = \frac{deg(u)}{{n-1}} $$</p>
-<p>⚠️ <strong>NOTE</strong>: <code>In a directed graph, both in-degree and out-degree centrality can be calculated.</code></p>
+<h2 id="jaccard-coefficient">Jaccard Coefficient</h2>
+<p>The most popular measures for link prediction analyze the “proximity” of nodes in a network. One way to measure proximity is to see what proportion of neighbors a pair of nodes share.  This can be capture succintly with the Jaccard index.  </p>
+<p><img src="https://upload.wikimedia.org/math/0/a/0/0a0633ce67c9130d890078a8d67f0474.png" alt=""></p>
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Intersection_of_sets_A_and_B.svg/250px-Intersection_of_sets_A_and_B.svg.png" alt=""></p>
+<p>In the context of a network, we&#39;re comparing sets of neighbors:</p>
+<p>$$ Jaccard = \frac{|\Gamma(u) \cap \Gamma(v)|}{|\Gamma(u) \cup \Gamma(v)|} $$</p>
+<p>where $\Gamma(u)$ denotes the set of neighbors of $u$.</p>
 </div>
 </div>
-</div><div style=display:none>
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Let&#39;s find the degree of our main character <code>Grey</code>.</p>
-</div>
-</div>
-</div>
-    </div><div style=display:none>
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre><span class="n">GA</span><span class="o">.</span><span class="n">degree</span><span class="p">(</span><span class="s">&quot;grey&quot;</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[3]:</div>
-
-
-<div class="output_text output_subarea output_pyout">
-<pre>
-4
-</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    </div><div style=display:none>
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Likewise, we can find the degree of each cast member.</p>
-</div>
-</div>
-</div>
-    </div><div style=display:none>
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre><span class="c"># See all of them (ok on this small graph)</span>
-<span class="n">GA</span><span class="o">.</span><span class="n">degree</span><span class="p">()</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
-
-
-<div class="output_text output_subarea output_pyout">
-<pre>
-{&apos;addison&apos;: 3,
- &apos;adele&apos;: 1,
- &apos;altman&apos;: 2,
- &apos;arizona&apos;: 1,
- &apos;avery&apos;: 1,
- &apos;bailey&apos;: 2,
- &apos;ben&apos;: 1,
- &apos;chief&apos;: 2,
- &apos;colin&apos;: 1,
- &apos;denny&apos;: 1,
- &apos;derek&apos;: 2,
- &apos;ellis grey&apos;: 2,
- &apos;finn&apos;: 1,
- &apos;grey&apos;: 4,
- &apos;hank&apos;: 1,
- &apos;izzie&apos;: 4,
- &apos;karev&apos;: 7,
- &apos;kepner&apos;: 1,
- &apos;lexi&apos;: 3,
- &apos;mrs. seabury&apos;: 1,
- &apos;nancy&apos;: 1,
- &quot;o&apos;malley&quot;: 4,
- &apos;olivia&apos;: 2,
- &apos;owen&apos;: 2,
- &apos;preston&apos;: 1,
- &apos;sloan&apos;: 5,
- &apos;steve&apos;: 1,
- &apos;susan grey&apos;: 1,
- &apos;thatch grey&apos;: 2,
- &apos;torres&apos;: 4,
- &apos;tucker&apos;: 1,
- &apos;yang&apos;: 3}
-</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    </div><div style=display:none>
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre><span class="c"># Here&#39;s the top 5.</span>
-<span class="nb">sorted</span><span class="p">(</span><span class="n">GA</span><span class="o">.</span><span class="n">degree</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[5]:</div>
-
-
-<div class="output_text output_subarea output_pyout">
-<pre>
-[(&apos;karev&apos;, 7), (&apos;sloan&apos;, 5), (&apos;grey&apos;, 4), (&apos;torres&apos;, 4), (&apos;izzie&apos;, 4)]
-</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    </div><aside class="notes">
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>While knowing the raw number is great, most centrality measures are <em>normalized</em> between zero and one so that they can be more easily compared to one another.</p>
-<p>For the <strong>degree centrality</strong> measure, the normalized interpretion is really intuitive:  </p>
-<blockquote>
-<p><em>What percentage of nodes is this node connected to?</em></p>
-</blockquote>
-<p>Or for our Grey&#39;s Anatomy example: </p>
-<blockquote>
-<p><em>What percentage of the cast has this character been invovled with?</em></p>
-</blockquote>
-</div>
-</div>
-</div>
-    </aside><div style=display:none>
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Let&#39;s calculate the degree centrality for <code>Grey</code>.</p>
-</div>
-</div>
-</div>
-    </div><div style=display:none>
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre><span class="c"># Degree for the &#39;Grey&#39; node</span>
-<span class="n">degree_grey</span> <span class="o">=</span> <span class="n">GA</span><span class="o">.</span><span class="n">degree</span><span class="p">(</span><span class="s">&quot;grey&quot;</span><span class="p">)</span>  <span class="c"># 4 romantic partners</span>
-
-<span class="c"># Total number of nodes (excluding Grey) </span>
-<span class="n">total_nodes_minus_grey</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">GA</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span><span class="o">-</span><span class="mi">1</span>  <span class="c"># 31 characters in the cast, excluding Grey</span>
-
-<span class="c"># Degree centrality for Grey</span>
-<span class="n">degree_centrality_grey</span> <span class="o">=</span> <span class="p">(</span><span class="n">degree_grey</span> <span class="o">/</span> <span class="n">total_nodes_minus_grey</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s">&quot;Calculated degree centrality for Grey:&quot;</span><span class="p">,</span> <span class="n">degree_centrality_grey</span><span class="p">)</span>
-
-<span class="c"># Double check</span>
-<span class="k">print</span><span class="p">(</span><span class="s">&quot;Networkx degree centrality for Grey:&quot;</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">degree_centrality</span><span class="p">(</span><span class="n">GA</span><span class="p">)[</span><span class="s">&quot;grey&quot;</span><span class="p">])</span>
-
-<span class="k">def</span> <span class="nf">check_equal</span><span class="p">(</span><span class="n">val1</span><span class="p">,</span> <span class="n">val2</span><span class="p">):</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="n">val1</span> <span class="o">==</span> <span class="n">val2</span><span class="p">),</span><span class="s">&quot;Centrality measure calculated incorrectly!&quot;</span>
-    <span class="k">return</span> <span class="s">&quot;Values match, good job!&quot;</span>
-
-<span class="n">check_equal</span><span class="p">(</span><span class="n">degree_centrality_grey</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">degree_centrality</span><span class="p">(</span><span class="n">GA</span><span class="p">)[</span><span class="s">&quot;grey&quot;</span><span class="p">])</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-Calculated degree centrality for Grey: 0.12903225806451613
-Networkx degree centrality for Grey: 0.12903225806451613
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt output_prompt">Out[6]:</div>
-
-
-<div class="output_text output_subarea output_pyout">
-<pre>
-&apos;Values match, good job!&apos;
-</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    </div><div style=display:none>
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Likewise, let&#39;s find the degree centrality for all characters.</p>
-</div>
-</div>
-</div>
-    </div></section><section>
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre><span class="n">degree_centrality</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">degree_centrality</span><span class="p">(</span><span class="n">GA</span><span class="p">)</span>
-<span class="n">degree_centrality</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[7]:</div>
-
-
-<div class="output_text output_subarea output_pyout">
-<pre>
-{&apos;addison&apos;: 0.0967741935483871,
- &apos;adele&apos;: 0.03225806451612903,
- &apos;altman&apos;: 0.06451612903225806,
- &apos;arizona&apos;: 0.03225806451612903,
- &apos;avery&apos;: 0.03225806451612903,
- &apos;bailey&apos;: 0.06451612903225806,
- &apos;ben&apos;: 0.03225806451612903,
- &apos;chief&apos;: 0.06451612903225806,
- &apos;colin&apos;: 0.03225806451612903,
- &apos;denny&apos;: 0.03225806451612903,
- &apos;derek&apos;: 0.06451612903225806,
- &apos;ellis grey&apos;: 0.06451612903225806,
- &apos;finn&apos;: 0.03225806451612903,
- &apos;grey&apos;: 0.12903225806451613,
- &apos;hank&apos;: 0.03225806451612903,
- &apos;izzie&apos;: 0.12903225806451613,
- &apos;karev&apos;: 0.22580645161290322,
- &apos;kepner&apos;: 0.03225806451612903,
- &apos;lexi&apos;: 0.0967741935483871,
- &apos;mrs. seabury&apos;: 0.03225806451612903,
- &apos;nancy&apos;: 0.03225806451612903,
- &quot;o&apos;malley&quot;: 0.12903225806451613,
- &apos;olivia&apos;: 0.06451612903225806,
- &apos;owen&apos;: 0.06451612903225806,
- &apos;preston&apos;: 0.03225806451612903,
- &apos;sloan&apos;: 0.16129032258064516,
- &apos;steve&apos;: 0.03225806451612903,
- &apos;susan grey&apos;: 0.03225806451612903,
- &apos;thatch grey&apos;: 0.06451612903225806,
- &apos;torres&apos;: 0.12903225806451613,
- &apos;tucker&apos;: 0.03225806451612903,
- &apos;yang&apos;: 0.0967741935483871}
-</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div></section><section>
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre><span class="c"># Top 5.  Percent of cast this character has been with.</span>
-<span class="nb">sorted</span><span class="p">(</span><span class="n">degree_centrality</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[8]:</div>
-
-
-<div class="output_text output_subarea output_pyout">
-<pre>
-[(&apos;karev&apos;, 0.22580645161290322),
- (&apos;sloan&apos;, 0.16129032258064516),
- (&apos;grey&apos;, 0.12903225806451613),
- (&apos;torres&apos;, 0.12903225806451613),
- (&apos;izzie&apos;, 0.12903225806451613)]
-</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div><div class="fragment">
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre><span class="c"># Top 5.  Total # of partners this character has been with.</span>
-<span class="nb">sorted</span><span class="p">(</span><span class="n">GA</span><span class="o">.</span><span class="n">degree</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[9]:</div>
-
-
-<div class="output_text output_subarea output_pyout">
-<pre>
-[(&apos;karev&apos;, 7), (&apos;sloan&apos;, 5), (&apos;grey&apos;, 4), (&apos;torres&apos;, 4), (&apos;izzie&apos;, 4)]
-</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    </div></section><section>
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre><span class="c"># apply measurements back to Graph</span>
-<span class="n">nx</span><span class="o">.</span><span class="n">set_node_attributes</span><span class="p">(</span><span class="n">GA</span><span class="p">,</span> <span class="s">&#39;degree centrality&#39;</span><span class="p">,</span> <span class="n">degree_centrality</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div><div class="fragment">
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre><span class="n">GA</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="s">&#39;karev&#39;</span><span class="p">]</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[11]:</div>
-
-
-<div class="output_text output_subarea output_pyout">
-<pre>
-{&apos;degree centrality&apos;: 0.22580645161290322, &apos;label&apos;: &apos;karev&apos;}
-</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    </div></section>
-    </section><section>
-    <section>
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="closeness-centrality">Closeness Centrality</h2>
-<p>Closeness Centrality measures how many &quot;hops&quot; it would take to reach every other node in a network (taking the shortest path). It can be informally thought as &#39;average distance&#39; to all other nodes.</p>
-<p><img style="float: center" src="https://toreopsahl.files.wordpress.com/2008/12/geodesic-n1.png?w=455"></p>
-<p>In NetworkX, it the reciporical of of the <em>average</em> value, which normalizes the value in a 0 to 1 range. </p>
-<p>$$ C_C (u) = \frac{n - 1}{\sum_{v=1}^{n-1} d(v, u)} $$</p>
-<p>If you again take the reciporical of this, you&#39;ll find the <em>average</em> distance to all other nodes.</p>
-</div>
-</div>
-</div><aside class="notes">
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>⚠️ <strong>NOTE</strong>: <code>If the graph is not completely connected, this algorithm computes the closeness centrality for each connected part separately.  The closeness centrality is normalized to (n-1)/(|G|-1) where n is the number of nodes in the connected part of graph containing the node.</code> [<a href="https://networkx.github.io/documentation/development/_modules/networkx/algorithms/centrality/closeness.html">Source</a>]</p>
-</div>
-</div>
-</div>
-    </aside><aside class="notes">
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Why should we care about closeness centrality?</strong></p>
-<blockquote>
-<p>Degree centrality measures might be criticized because they only take into account the immediate ties that an actor has, or the ties of the actor&#39;s neighbors, rather than indirect ties to all others. One actor might be tied to a large number of others, but those others might be rather disconnected from the network as a whole. In a case like this, the actor could be quite central, but only in a local neighborhood. [<a href="http://www.faculty.ucr.edu/~hanneman/nettext/C10_Centrality.html#Closeness">Source</a>]</p>
-</blockquote>
-<p>In our example, closeness centrality could perhaps help us understand which characters have the greatest potential to spread an infectous disease or STD across the cast (an admittedly dark plot arc).</p>
-</div>
-</div>
-</div>
-    </aside><div style=display:none>
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Let&#39;s calculate the closeness centrality for <code>Grey</code>.  First we&#39;ll start by getting the shortest paths between <code>Grey</code> and all other characters.</p>
-</div>
-</div>
-</div>
-    </div><div style=display:none>
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre><span class="c"># Shortest path between Grey and other characters</span>
-<span class="n">grey_shortest_path</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">shortest_path_length</span><span class="p">(</span><span class="n">GA</span><span class="p">)[</span><span class="s">&#39;grey&#39;</span><span class="p">]</span>
-<span class="n">grey_shortest_path</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[12]:</div>
-
-
-<div class="output_text output_subarea output_pyout">
-<pre>
-{&apos;addison&apos;: 2,
- &apos;altman&apos;: 4,
- &apos;arizona&apos;: 3,
- &apos;avery&apos;: 5,
- &apos;colin&apos;: 7,
- &apos;denny&apos;: 3,
- &apos;derek&apos;: 1,
- &apos;finn&apos;: 1,
- &apos;grey&apos;: 0,
- &apos;hank&apos;: 3,
- &apos;izzie&apos;: 2,
- &apos;karev&apos;: 3,
- &apos;kepner&apos;: 4,
- &apos;lexi&apos;: 4,
- &apos;mrs. seabury&apos;: 4,
- &apos;nancy&apos;: 4,
- &quot;o&apos;malley&quot;: 1,
- &apos;olivia&apos;: 2,
- &apos;owen&apos;: 5,
- &apos;preston&apos;: 7,
- &apos;sloan&apos;: 3,
- &apos;steve&apos;: 1,
- &apos;torres&apos;: 2,
- &apos;yang&apos;: 6}
-</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    </div><div style=display:none>
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre><span class="c"># Sum of the shortest paths to all other characters</span>
-<span class="n">grey_sum_shortest_path</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">grey_shortest_path</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>  <span class="c"># 77</span>
-
-<span class="c"># Closeness centrality for Grey</span>
-<span class="n">closeness_centrality_grey</span> <span class="o">=</span> <span class="p">(</span><span class="n">total_nodes_minus_grey</span> <span class="o">/</span> <span class="n">grey_sum_shortest_path</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s">&quot;Calculated closeness centrality for Grey:&quot;</span><span class="p">,</span> <span class="n">closeness_centrality_grey</span><span class="p">)</span>
-
-<span class="c"># Double check</span>
-<span class="k">print</span><span class="p">(</span><span class="s">&quot;Networkx closeness centrality for Grey:&quot;</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">closeness_centrality</span><span class="p">(</span><span class="n">GA</span><span class="p">)[</span><span class="s">&quot;grey&quot;</span><span class="p">])</span>
-
-<span class="n">check_equal</span><span class="p">(</span><span class="n">closeness_centrality_grey</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">closeness_centrality</span><span class="p">(</span><span class="n">GA</span><span class="p">)[</span><span class="s">&quot;grey&quot;</span><span class="p">])</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-Calculated closeness centrality for Grey: 0.4025974025974026
-Networkx closeness centrality for Grey: 0.2216170925848345
-
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_text output_pyerr">
-<pre>
-<span class="ansired">---------------------------------------------------------------------------</span>
-<span class="ansired">AssertionError</span>                            Traceback (most recent call last)
-<span class="ansigreen">&lt;ipython-input-13-fc22a437e78e&gt;</span> in <span class="ansicyan">&lt;module&gt;</span><span class="ansiblue">()</span>
-<span class="ansigreen">      9</span> print<span class="ansiblue">(</span><span class="ansiblue">&quot;Networkx closeness centrality for Grey:&quot;</span><span class="ansiblue">,</span> nx<span class="ansiblue">.</span>closeness_centrality<span class="ansiblue">(</span>GA<span class="ansiblue">)</span><span class="ansiblue">[</span><span class="ansiblue">&quot;grey&quot;</span><span class="ansiblue">]</span><span class="ansiblue">)</span><span class="ansiblue"></span>
-<span class="ansigreen">     10</span> <span class="ansiblue"></span>
-<span class="ansigreen">---&gt; 11</span><span class="ansired"> </span>check_equal<span class="ansiblue">(</span>closeness_centrality_grey<span class="ansiblue">,</span> nx<span class="ansiblue">.</span>closeness_centrality<span class="ansiblue">(</span>GA<span class="ansiblue">)</span><span class="ansiblue">[</span><span class="ansiblue">&quot;grey&quot;</span><span class="ansiblue">]</span><span class="ansiblue">)</span><span class="ansiblue"></span>
-
-<span class="ansigreen">&lt;ipython-input-6-ebc10af03687&gt;</span> in <span class="ansicyan">check_equal</span><span class="ansiblue">(val1, val2)</span>
-<span class="ansigreen">     13</span> <span class="ansiblue"></span>
-<span class="ansigreen">     14</span> <span class="ansigreen">def</span> check_equal<span class="ansiblue">(</span>val1<span class="ansiblue">,</span> val2<span class="ansiblue">)</span><span class="ansiblue">:</span><span class="ansiblue"></span>
-<span class="ansigreen">---&gt; 15</span><span class="ansired">     </span><span class="ansigreen">assert</span> <span class="ansiblue">(</span>val1 <span class="ansiblue">==</span> val2<span class="ansiblue">)</span><span class="ansiblue">,</span><span class="ansiblue">&quot;Centrality measure calculated incorrectly!&quot;</span><span class="ansiblue"></span>
-<span class="ansigreen">     16</span>     <span class="ansigreen">return</span> <span class="ansiblue">&quot;Values match, good job!&quot;</span><span class="ansiblue"></span>
-<span class="ansigreen">     17</span> <span class="ansiblue"></span>
-
-<span class="ansired">AssertionError</span>: Centrality measure calculated incorrectly!</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-    </div><div style=display:none>
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Interesting...our calculated measure is not the same as the one in NetworkX.  </p>
-<p><em>What happened here?</em></p>
-<p>This error occured because <strong>the character relationship graph is not fully connected.</strong> (i.e., there are groups of characters that do not have relationships with one another).</p>
-</div>
-</div>
-</div>
-    </div><div style=display:none>
     
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight"><pre><span class="c"># View members of different subgraphs</span>
-<span class="nb">sorted</span><span class="p">(</span><span class="n">nx</span><span class="o">.</span><span class="n">connected_components</span><span class="p">(</span><span class="n">GA</span><span class="p">),</span> <span class="n">key</span> <span class="o">=</span> <span class="nb">len</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="highlight"><pre><span class="n">preds_jc</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">jaccard_coefficient</span><span class="p">(</span><span class="n">GA</span><span class="p">)</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[14]:</div>
-
-
-<div class="output_text output_subarea output_pyout">
-<pre>
-[{&apos;addison&apos;,
-  &apos;altman&apos;,
-  &apos;arizona&apos;,
-  &apos;avery&apos;,
-  &apos;colin&apos;,
-  &apos;denny&apos;,
-  &apos;derek&apos;,
-  &apos;finn&apos;,
-  &apos;grey&apos;,
-  &apos;hank&apos;,
-  &apos;izzie&apos;,
-  &apos;karev&apos;,
-  &apos;kepner&apos;,
-  &apos;lexi&apos;,
-  &apos;mrs. seabury&apos;,
-  &apos;nancy&apos;,
-  &quot;o&apos;malley&quot;,
-  &apos;olivia&apos;,
-  &apos;owen&apos;,
-  &apos;preston&apos;,
-  &apos;sloan&apos;,
-  &apos;steve&apos;,
-  &apos;torres&apos;,
-  &apos;yang&apos;},
- {&apos;adele&apos;, &apos;chief&apos;, &apos;ellis grey&apos;, &apos;susan grey&apos;, &apos;thatch grey&apos;},
- {&apos;bailey&apos;, &apos;ben&apos;, &apos;tucker&apos;}]
-</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    </div><div style=display:none>
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>To correct for this, we will use the number of nodes in the <code>Grey</code> subgraph instead of the total number of nodes to calculated degree centrality.  Additionally, we&#39;ll normalized to <code>(n-1)/(|G|-1)</code> where <code>n</code> is the number of nodes in the connected part of graph containing the node.</p>
-</div>
-</div>
-</div>
-    </div><div style=display:none>
+</div><div class="fragment">
     
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight"><pre><span class="c"># Number of nodes in Grey subgraph, excluding Grey</span>
-<span class="n">total_nodes_minus_grey_sub</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">grey_shortest_path</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>   <span class="c"># 23</span>
-
-<span class="c"># Closeness centrality for Grey (unnormalized)</span>
-<span class="n">closeness_centrality_grey</span> <span class="o">=</span> <span class="p">(</span><span class="n">total_nodes_minus_grey_sub</span> <span class="o">/</span> <span class="n">grey_sum_shortest_path</span><span class="p">)</span>   <span class="c"># ~0.2987</span>
-
-<span class="c"># Closeness centrality for Grey (normalized)</span>
-<span class="n">closeness_centrality_grey_normalized</span> <span class="o">=</span> <span class="n">closeness_centrality_grey</span> <span class="o">*</span> <span class="p">(</span><span class="n">total_nodes_minus_grey_sub</span><span class="o">/</span><span class="n">total_nodes_minus_grey</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s">&quot;Calculated closeness centrality for Grey (normalized):&quot;</span><span class="p">,</span> <span class="n">closeness_centrality_grey_normalized</span><span class="p">)</span>
-
-<span class="c"># Double check</span>
-<span class="k">print</span><span class="p">(</span><span class="s">&quot;Networkx closeness centrality for Grey:&quot;</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">closeness_centrality</span><span class="p">(</span><span class="n">GA</span><span class="p">)[</span><span class="s">&quot;grey&quot;</span><span class="p">])</span>
-
-<span class="n">check_equal</span><span class="p">(</span><span class="n">closeness_centrality_grey_normalized</span><span class="p">,</span> <span class="n">nx</span><span class="o">.</span><span class="n">closeness_centrality</span><span class="p">(</span><span class="n">GA</span><span class="p">)[</span><span class="s">&quot;grey&quot;</span><span class="p">])</span>
+<div class="highlight"><pre><span class="n">pred_jc_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">preds_jc</span><span class="p">:</span>
+    <span class="n">pred_jc_dict</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">)]</span> <span class="o">=</span> <span class="n">p</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>
-Calculated closeness centrality for Grey (normalized): 0.2216170925848345
-Networkx closeness centrality for Grey: 0.2216170925848345
-
-</pre>
 </div>
-</div>
-
-<div class="output_area"><div class="prompt output_prompt">Out[15]:</div>
-
-
-<div class="output_text output_subarea output_pyout">
-<pre>
-&apos;Values match, good job!&apos;
-</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-    </div><div style=display:none>
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p>Let&#39;s find the closeness centrality for all characters.</p>
-</div>
-</div>
-</div>
-    </div></section><section>
+    </div><div class="fragment">
     
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight"><pre><span class="n">closeness_centrality</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">closeness_centrality</span><span class="p">(</span><span class="n">GA</span><span class="p">)</span>
-<span class="n">closeness_centrality</span>
+<div class="highlight"><pre><span class="nb">sorted</span><span class="p">(</span><span class="n">pred_jc_dict</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 
 </div>
@@ -2574,124 +1860,16 @@ Networkx closeness centrality for Grey: 0.2216170925848345
 
 <div class="output_text output_subarea output_pyout">
 <pre>
-{&apos;addison&apos;: 0.2892290869327502,
- &apos;adele&apos;: 0.05161290322580645,
- &apos;altman&apos;: 0.2337604949182501,
- &apos;arizona&apos;: 0.21600653327888933,
- &apos;avery&apos;: 0.19614386355209493,
- &apos;bailey&apos;: 0.06451612903225806,
- &apos;ben&apos;: 0.04301075268817204,
- &apos;chief&apos;: 0.07373271889400922,
- &apos;colin&apos;: 0.13228307076769194,
- &apos;denny&apos;: 0.18752215526409075,
- &apos;derek&apos;: 0.2337604949182501,
- &apos;ellis grey&apos;: 0.08602150537634408,
- &apos;finn&apos;: 0.17236884978820463,
- &apos;grey&apos;: 0.2216170925848345,
- &apos;hank&apos;: 0.18752215526409075,
- &apos;izzie&apos;: 0.24731182795698925,
- &apos;karev&apos;: 0.2892290869327502,
- &apos;kepner&apos;: 0.21067303863002787,
- &apos;lexi&apos;: 0.26253101736972706,
- &apos;mrs. seabury&apos;: 0.21067303863002787,
- &apos;nancy&apos;: 0.21067303863002787,
- &quot;o&apos;malley&quot;: 0.2708653353814644,
- &apos;olivia&apos;: 0.2337604949182501,
- &apos;owen&apos;: 0.19173613628126135,
- &apos;preston&apos;: 0.13228307076769194,
- &apos;sloan&apos;: 0.2892290869327502,
- &apos;steve&apos;: 0.17236884978820463,
- &apos;susan grey&apos;: 0.05161290322580645,
- &apos;thatch grey&apos;: 0.07373271889400922,
- &apos;torres&apos;: 0.29937747594793435,
- &apos;tucker&apos;: 0.04301075268817204,
- &apos;yang&apos;: 0.1594814591498342}
-</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div></section><section>
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre><span class="c"># top 5</span>
-<span class="nb">sorted</span><span class="p">(</span><span class="n">closeness_centrality</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[17]:</div>
-
-
-<div class="output_text output_subarea output_pyout">
-<pre>
-[(&apos;torres&apos;, 0.29937747594793435),
- (&apos;sloan&apos;, 0.2892290869327502),
- (&apos;addison&apos;, 0.2892290869327502),
- (&apos;karev&apos;, 0.2892290869327502),
- (&quot;o&apos;malley&quot;, 0.2708653353814644)]
-</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div><div style=display:none>
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre><span class="c"># apply measurements back to Graph</span>
-<span class="n">nx</span><span class="o">.</span><span class="n">set_node_attributes</span><span class="p">(</span><span class="n">GA</span><span class="p">,</span> <span class="s">&#39;closeness centrality&#39;</span><span class="p">,</span> <span class="n">closeness_centrality</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-    </div><div class="fragment">
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre><span class="c"># average distance of torres:</span>
-<span class="mi">1</span> <span class="o">/</span> <span class="n">closeness_centrality</span><span class="p">[</span><span class="s">&#39;torres&#39;</span><span class="p">]</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[19]:</div>
-
-
-<div class="output_text output_subarea output_pyout">
-<pre>
-3.340264650283554
+[((&apos;steve&apos;, &apos;finn&apos;), 1.0),
+ ((&apos;tucker&apos;, &apos;ben&apos;), 1.0),
+ ((&apos;mrs. seabury&apos;, &apos;kepner&apos;), 1.0),
+ ((&apos;colin&apos;, &apos;preston&apos;), 1.0),
+ ((&apos;denny&apos;, &apos;hank&apos;), 1.0),
+ ((&apos;lexi&apos;, &apos;addison&apos;), 0.5),
+ ((&apos;olivia&apos;, &apos;izzie&apos;), 0.5),
+ ((&apos;preston&apos;, &apos;owen&apos;), 0.5),
+ ((&apos;derek&apos;, &apos;finn&apos;), 0.5),
+ ((&apos;torres&apos;, &apos;olivia&apos;), 0.5)]
 </pre>
 </div>
 
@@ -2705,10 +1883,74 @@ Networkx closeness centrality for Grey: 0.2216170925848345
     
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight"><pre><span class="mi">7</span><span class="o">/</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">GA</span><span class="o">.</span><span class="n">nodes</span><span class="p">())</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<div class="highlight"><pre><span class="n">extra_attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;finn&#39;</span><span class="p">:(</span><span class="s">&#39;Finn Dandridge&#39;</span><span class="p">,</span><span class="s">&#39;M&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;olivia&#39;</span><span class="p">:(</span><span class="s">&#39;Olivia Harper&#39;</span><span class="p">,</span><span class="s">&#39;F&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;steve&#39;</span><span class="p">:(</span><span class="s">&#39;Steve Murphy&#39;</span><span class="p">,</span><span class="s">&#39;M&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;torres&#39;</span><span class="p">:(</span><span class="s">&#39;Callie Torres&#39;</span><span class="p">,</span><span class="s">&#39;F&#39;</span><span class="p">,</span><span class="s">&#39;B&#39;</span><span class="p">),</span>
+ <span class="s">&#39;colin&#39;</span><span class="p">:(</span><span class="s">&#39;Colin Marlow&#39;</span><span class="p">,</span><span class="s">&#39;M&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;grey&#39;</span><span class="p">:(</span><span class="s">&#39;Meredith Grey&#39;</span><span class="p">,</span><span class="s">&#39;F&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;mrs. seabury&#39;</span><span class="p">:(</span><span class="s">&#39;Dana Seabury&#39;</span><span class="p">,</span><span class="s">&#39;F&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;altman&#39;</span><span class="p">:(</span><span class="s">&#39;Teddy Altman&#39;</span><span class="p">,</span><span class="s">&#39;F&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;tucker&#39;</span><span class="p">:(</span><span class="s">&#39;Tucker Jones&#39;</span><span class="p">,</span><span class="s">&#39;M&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;ben&#39;</span><span class="p">:(</span><span class="s">&#39;Ben Warren&#39;</span><span class="p">,</span><span class="s">&#39;M&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&quot;o&#39;malley&quot;</span><span class="p">:(</span><span class="s">&quot;George O&#39;Malley&quot;</span><span class="p">,</span><span class="s">&#39;M&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;thatch grey&#39;</span><span class="p">:(</span><span class="s">&#39;Thatcher Grey&#39;</span><span class="p">,</span><span class="s">&#39;M&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;susan grey&#39;</span><span class="p">:(</span><span class="s">&#39;Susan Grey&#39;</span><span class="p">,</span><span class="s">&#39;F&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;derek&#39;</span><span class="p">:(</span><span class="s">&#39;Derek Shepherd&#39;</span><span class="p">,</span><span class="s">&#39;M&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;chief&#39;</span><span class="p">:(</span><span class="s">&#39;Richard Webber&#39;</span><span class="p">,</span><span class="s">&#39;M&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;addison&#39;</span><span class="p">:(</span><span class="s">&#39;Addison Montgomery&#39;</span><span class="p">,</span><span class="s">&#39;F&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;karev&#39;</span><span class="p">:(</span><span class="s">&#39;Alex Karev&#39;</span><span class="p">,</span><span class="s">&#39;M&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;hank&#39;</span><span class="p">:(</span><span class="s">&#39;Hank&#39;</span><span class="p">,</span><span class="s">&#39;M&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;lexi&#39;</span><span class="p">:(</span><span class="s">&#39;Lexie Grey&#39;</span><span class="p">,</span><span class="s">&#39;F&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;adele&#39;</span><span class="p">:(</span><span class="s">&#39;Adele Webber&#39;</span><span class="p">,</span><span class="s">&#39;F&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;owen&#39;</span><span class="p">:(</span><span class="s">&#39;Owen Hunt&#39;</span><span class="p">,</span><span class="s">&#39;M&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;sloan&#39;</span><span class="p">:(</span><span class="s">&#39;Mark Sloan&#39;</span><span class="p">,</span><span class="s">&#39;M&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;arizona&#39;</span><span class="p">:(</span><span class="s">&#39;Arizona Robbins&#39;</span><span class="p">,</span><span class="s">&#39;F&#39;</span><span class="p">,</span><span class="s">&#39;G&#39;</span><span class="p">),</span>
+ <span class="s">&#39;izzie&#39;</span><span class="p">:(</span><span class="s">&#39;Izzie Stevens&#39;</span><span class="p">,</span><span class="s">&#39;F&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;preston&#39;</span><span class="p">:(</span><span class="s">&#39;Preston Burke&#39;</span><span class="p">,</span><span class="s">&#39;M&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;kepner&#39;</span><span class="p">:(</span><span class="s">&#39;April Kepner&#39;</span><span class="p">,</span><span class="s">&#39;M&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;bailey&#39;</span><span class="p">:(</span><span class="s">&#39;Miranda Bailey&#39;</span><span class="p">,</span><span class="s">&#39;F&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;ellis grey&#39;</span><span class="p">:(</span><span class="s">&#39;Ellis Grey&#39;</span><span class="p">,</span><span class="s">&#39;F&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;denny&#39;</span><span class="p">:(</span><span class="s">&#39;Denny Duquette&#39;</span><span class="p">,</span><span class="s">&#39;M&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;yang&#39;</span><span class="p">:(</span><span class="s">&#39;Cristina Yang&#39;</span><span class="p">,</span><span class="s">&#39;F&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;nancy&#39;</span><span class="p">:(</span><span class="s">&#39;Nancy Shepherd&#39;</span><span class="p">,</span><span class="s">&#39;F&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">),</span>
+ <span class="s">&#39;avery&#39;</span><span class="p">:(</span><span class="s">&#39;Jackson Avery&#39;</span><span class="p">,</span><span class="s">&#39;M&#39;</span><span class="p">,</span><span class="s">&#39;S&#39;</span><span class="p">)}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+    </div><div style=display:none>
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">GA</span><span class="o">.</span><span class="n">nodes</span><span class="p">():</span>
+    <span class="n">GA</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&quot;full_name&quot;</span><span class="p">]</span>   <span class="o">=</span> <span class="n">extra_attrs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">GA</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&quot;gender&quot;</span><span class="p">]</span>      <span class="o">=</span> <span class="n">extra_attrs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">GA</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&quot;orientation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">extra_attrs</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+    </div><div style=display:none>
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[47]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="n">GA</span><span class="o">.</span><span class="n">node</span><span class="p">[</span><span class="s">&#39;grey&#39;</span><span class="p">]</span>
 </pre></div>
 
 </div>
@@ -2719,12 +1961,15 @@ Networkx closeness centrality for Grey: 0.2216170925848345
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[20]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[47]:</div>
 
 
 <div class="output_text output_subarea output_pyout">
 <pre>
-0.22580645161290322
+{&apos;full_name&apos;: &apos;Meredith Grey&apos;,
+ &apos;gender&apos;: &apos;F&apos;,
+ &apos;label&apos;: &apos;grey&apos;,
+ &apos;orientation&apos;: &apos;S&apos;}
 </pre>
 </div>
 
@@ -2743,39 +1988,53 @@ Networkx closeness centrality for Grey: 0.2216170925848345
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="betweeness-centrality">Betweeness Centrality</h2>
-<p>Betweenness centrality quantifies the number of times a node acts as a bridge (or &quot;broker&quot;) along the shortest path between two other nodes.  </p>
-<p><img src="https://intl520-summer2011-mas.wikispaces.com/file/view/Simple_Network.gif/238734999/480x360/Simple_Network.gif" alt=""></p>
-<p>In this conception, vertices that have a high probability to occur on a randomly chosen shortest path between two randomly chosen vertices have a high betweenness.</p>
-<p>$$ C_B(v) =\sum_{s,t \in V} \frac{\sigma(s, t|v)}{\sigma(s, t)} $$</p>
-<p>where ${\sigma(s, t)}$ is total number of shortest paths from node ${s}$ to node ${t}$ and ${\sigma(s, t|v)}$ is the number of those paths that pass through ${v}$.</p>
+<h2 id="preferential-attachment">Preferential Attachment</h2>
+<p>The preferential attachement methods mirrors the “rich get richer” -- nodes with more connections will be the ones to be more likely to get future connections. </p>
+<p><img src="http://www.frumforum.com/wp-content/uploads/2011/10/rich1.jpg" alt=""></p>
+<p>Essentially, the measure is the product of a node pairs degrees:</p>
+<p>$$ PA = |\Gamma(u)| \bullet |\Gamma(v)|$$</p>
+<p>where $\Gamma(u)$ denotes the set of neighbors (<em>degree</em>) of $u$.</p>
 </div>
 </div>
-</div><aside class="notes">
+</div></section><section>
     
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Why is betweeness centrality important?</strong></p>
-<blockquote>
-<p>Suppose that I want to influence you by sending you information, or make a deal to exchange some resources. But, in order to talk to you, I must go through an intermediary. For example, let&#39;s suppose that I wanted to try to convince the Chancellor of my university to buy me a new computer. According to the rules of our bureaucratic hierarchy, I must forward my request through my department chair, a dean, and an executive vice chancellor. Each one of these people could delay the request, or even prevent my request from getting through. This gives the people who lie &quot;between&quot; me and the Chancellor power with respect to me... Having more than one channel makes me less dependent, and, in a sense, more powerful.  [<a href="http://www.faculty.ucr.edu/~hanneman/nettext/C10_Centrality.html#Closeness">Source</a>]</p>
-</blockquote>
-<p>While this metric seems less relevent to our particular network, let&#39;s create a hypothetical situation:</p>
-<p>To engage with a new romantic partner, you needed permission from at least one of their former partners and you could only send your request through existing partners (<em>awkward</em> 😬).  Betweeness centrality would tell you which actors had the most effective veto power to thwart random requests made by a member to another random member in the network.</p>
+    <div class="input_area">
+<div class="highlight"><pre><span class="n">preds_pa</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">preferential_attachment</span><span class="p">(</span><span class="n">GA</span><span class="p">)</span>
+</pre></div>
+
 </div>
 </div>
 </div>
-    </aside></section><section>
+
+</div><div class="fragment">
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class="highlight"><pre><span class="n">pred_pa_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">preds_pa</span><span class="p">:</span>
+    <span class="n">pred_pa_dict</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span><span class="n">v</span><span class="p">)]</span> <span class="o">=</span> <span class="n">p</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+    </div></section><section>
     
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class="highlight"><pre><span class="n">betweeness_centrality</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">betweenness_centrality</span><span class="p">(</span><span class="n">GA</span><span class="p">)</span>
-<span class="n">betweeness_centrality</span>
+<div class="highlight"><pre><span class="nb">sorted</span><span class="p">(</span><span class="n">pred_pa_dict</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)[:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 
 </div>
@@ -2791,75 +2050,16 @@ Networkx closeness centrality for Grey: 0.2216170925848345
 
 <div class="output_text output_subarea output_pyout">
 <pre>
-{&apos;addison&apos;: 0.09480286738351255,
- &apos;adele&apos;: 0.0,
- &apos;altman&apos;: 0.16344086021505377,
- &apos;arizona&apos;: 0.0,
- &apos;avery&apos;: 0.0,
- &apos;bailey&apos;: 0.002150537634408602,
- &apos;ben&apos;: 0.0,
- &apos;chief&apos;: 0.0064516129032258064,
- &apos;colin&apos;: 0.0,
- &apos;denny&apos;: 0.0,
- &apos;derek&apos;: 0.03860215053763442,
- &apos;ellis grey&apos;: 0.008602150537634409,
- &apos;finn&apos;: 0.0,
- &apos;grey&apos;: 0.10078853046594981,
- &apos;hank&apos;: 0.0,
- &apos;izzie&apos;: 0.10311827956989247,
- &apos;karev&apos;: 0.20487455197132617,
- &apos;kepner&apos;: 0.0,
- &apos;lexi&apos;: 0.07741935483870968,
- &apos;mrs. seabury&apos;: 0.0,
- &apos;nancy&apos;: 0.0,
- &quot;o&apos;malley&quot;: 0.11702508960573475,
- &apos;olivia&apos;: 0.010645161290322579,
- &apos;owen&apos;: 0.12903225806451613,
- &apos;preston&apos;: 0.0,
- &apos;sloan&apos;: 0.2481003584229391,
- &apos;steve&apos;: 0.0,
- &apos;susan grey&apos;: 0.0,
- &apos;thatch grey&apos;: 0.0064516129032258064,
- &apos;torres&apos;: 0.14440860215053763,
- &apos;tucker&apos;: 0.0,
- &apos;yang&apos;: 0.09247311827956989}
-</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div></section><section>
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre><span class="c"># top 5</span>
-<span class="nb">sorted</span><span class="p">(</span><span class="n">betweeness_centrality</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[22]:</div>
-
-
-<div class="output_text output_subarea output_pyout">
-<pre>
-[(&apos;sloan&apos;, 0.2481003584229391),
- (&apos;karev&apos;, 0.20487455197132617),
- (&apos;altman&apos;, 0.16344086021505377),
- (&apos;torres&apos;, 0.14440860215053763),
- (&apos;owen&apos;, 0.12903225806451613)]
+[((&apos;karev&apos;, &apos;sloan&apos;), 35),
+ ((&apos;karev&apos;, &quot;o&apos;malley&quot;), 28),
+ ((&apos;karev&apos;, &apos;grey&apos;), 28),
+ ((&apos;karev&apos;, &apos;yang&apos;), 21),
+ ((&apos;izzie&apos;, &apos;sloan&apos;), 20),
+ ((&apos;sloan&apos;, &quot;o&apos;malley&quot;), 20),
+ ((&apos;grey&apos;, &apos;sloan&apos;), 20),
+ ((&apos;torres&apos;, &apos;izzie&apos;), 16),
+ ((&apos;torres&apos;, &apos;grey&apos;), 16),
+ ((&apos;grey&apos;, &apos;izzie&apos;), 16)]
 </pre>
 </div>
 
@@ -2877,133 +2077,11 @@ Networkx closeness centrality for Grey: 0.2216170925848345
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="eigenvector-centrality">Eigenvector Centrality</h2>
-<p>A node is high in eigenvector centrality if it is connected to many other nodes who are themselves well connected. Eigenvector centrality for each node is simply calculated as the proportional eigenvector values of the eigenvector with the largest eigenvalue.</p>
-<p><img align="middle" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/6_centrality_measures.png/350px-6_centrality_measures.png"></p>
-<p><em><strong>Middle Left (&quot;C&quot;):</strong> Eigenvector Centrality.  <strong>Middle Right (&quot;D&quot;):</strong> Degree Centrality</em></p>
-</div>
-</div>
-</div></section><section>
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre><span class="n">eigenvector_centrality</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">eigenvector_centrality_numpy</span><span class="p">(</span><span class="n">GA</span><span class="p">)</span>
-<span class="n">eigenvector_centrality</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[23]:</div>
-
-
-<div class="output_text output_subarea output_pyout">
-<pre>
-{&apos;addison&apos;: 0.27840139594529484,
- &apos;adele&apos;: 1.9174361020633493e-17,
- &apos;altman&apos;: 0.10442628192357332,
- &apos;arizona&apos;: 0.10564201543690796,
- &apos;avery&apos;: 0.07734385472828517,
- &apos;bailey&apos;: 9.263106481497497e-18,
- &apos;ben&apos;: 7.758344885334556e-18,
- &apos;chief&apos;: 1.8182275475659365e-17,
- &apos;colin&apos;: 0.003524389734813531,
- &apos;denny&apos;: 0.08320301854301716,
- &apos;derek&apos;: 0.12570740328311855,
- &apos;ellis grey&apos;: -3.6847181716085045e-18,
- &apos;finn&apos;: 0.044220171351811506,
- &apos;grey&apos;: 0.15107836088557355,
- &apos;hank&apos;: 0.0832030185430171,
- &apos;izzie&apos;: 0.2842633865482767,
- &apos;karev&apos;: 0.5027687871890415,
- &apos;kepner&apos;: 0.14715887695313776,
- &apos;lexi&apos;: 0.2642455341015447,
- &apos;mrs. seabury&apos;: 0.14715887695313773,
- &apos;nancy&apos;: 0.09444834886225358,
- &quot;o&apos;malley&quot;: 0.302011970950596,
- &apos;olivia&apos;: 0.2355568515369945,
- &apos;owen&apos;: 0.03408964112637763,
- &apos;preston&apos;: 0.003524389734813535,
- &apos;sloan&apos;: 0.32268309457542493,
- &apos;steve&apos;: 0.044220171351811464,
- &apos;susan grey&apos;: -1.7343272189086043e-17,
- &apos;thatch grey&apos;: -1.8891115666864102e-17,
- &apos;torres&apos;: 0.3609262932492623,
- &apos;tucker&apos;: -1.0927049742787877e-17,
- &apos;yang&apos;: 0.012041089122459077}
-</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div></section><section>
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class="highlight"><pre><span class="n">max_value</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">eigenvector_centrality</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-
-<span class="n">ec_scaled</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">eigenvector_centrality</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-    <span class="n">ec_scaled</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">eigenvector_centrality</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">/</span> <span class="n">max_value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-
-<span class="c"># Scaled by the most central character (karev)</span>
-<span class="nb">sorted</span><span class="p">(</span><span class="n">ec_scaled</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[25]:</div>
-
-
-<div class="output_text output_subarea output_pyout">
-<pre>
-[(&apos;karev&apos;, 1.0),
- (&apos;torres&apos;, 0.7178772876239704),
- (&apos;sloan&apos;, 0.6418121068722904),
- (&quot;o&apos;malley&quot;, 0.6006975346244778),
- (&apos;izzie&apos;, 0.5653958515157255)]
-</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div></section>
-    </section><section>
-    <section>
-    
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="other-centrality-measures">Other Centrality Measures</h2>
+<h2 id="other-link-prediction-algorithms">Other Link Prediction Algorithms</h2>
 <ul>
-<li><a href="https://networkx.readthedocs.io/en/latest/reference/generated/networkx.algorithms.centrality.harmonic_centrality.html">Harmonic Centrality</a></li>
-<li><a href="https://en.wikipedia.org/wiki/Katz_centrality">Katz Centrality</a></li>
-<li><a href="http://game-theoretic-centrality.com/">Game Theoretic Centrality</a></li>
+<li><a href="https://www.cs.cornell.edu/home/kleinber/link-pred.pdf">Common Neighbors</a></li>
+<li><a href="https://networkx.github.io/documentation/development/reference/generated/networkx.algorithms.link_prediction.adamic_adar_index.html">Resource Allocation Index</a></li>
+<li><a href="https://networkx.github.io/documentation/development/reference/generated/networkx.algorithms.link_prediction.adamic_adar_index.html">Adamic-Adar index</a></li>
 </ul>
 </div>
 </div>
