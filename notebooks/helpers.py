@@ -3,7 +3,7 @@ from seaborn import color_palette, set_style, palplot
 
 
 def create_color_map(G, attribute, seaborn_palette="colorblind"):
-
+    """Return a list of hex color mappings for node attributes"""
     attributes = [G.node[label][attribute] for label in G.nodes()]
 
     # get the set of possible attributes
@@ -22,6 +22,8 @@ def create_color_map(G, attribute, seaborn_palette="colorblind"):
     return node_colors, color_map, palette
 
 def map_communities(G, communities):
+    """Return a mapping of community membership a community set tuple"""
+
     community_map = {}
     for node in G.nodes():
         for i, comm in enumerate(communities):
