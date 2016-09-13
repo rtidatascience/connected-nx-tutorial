@@ -22,7 +22,7 @@ def create_color_map(G, attribute, seaborn_palette="colorblind"):
     return node_colors, color_map, palette
 
 def map_communities(G, communities):
-    """Return a mapping of community membership a community set tuple"""
+    """Return a mapping of community membership from a community set tuple"""
 
     community_map = {}
     for node in G.nodes():

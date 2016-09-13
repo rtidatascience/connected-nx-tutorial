@@ -12018,8 +12018,7 @@ a.anchor-link {
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">map_communities</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">communities</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Return a mapping of community membership a community set tuple&quot;&quot;&quot;</span>
-    
+    <span class="sd">&quot;&quot;&quot;Return a mapping of community membership from a community set tuple&quot;&quot;&quot;</span>
     <span class="n">community_map</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">G</span><span class="o">.</span><span class="n">nodes</span><span class="p">():</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">comm</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">communities</span><span class="p">):</span>
