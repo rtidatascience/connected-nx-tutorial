@@ -11846,7 +11846,7 @@ $ <span class="nb">source</span> activate connected
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Outline">Outline<a class="anchor-link" href="#Outline">&#182;</a></h2><ul>
-<li>Introduction / What is Social Network Analysis</li>
+<li>Introduction &amp; Background</li>
 <li>Creating Graphs</li>
 <li>Visualizing Graphs</li>
 <li>Centrality</li>
@@ -11863,14 +11863,48 @@ $ <span class="nb">source</span> activate connected
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="What-is-Social-Network-Analysis?">What is Social Network Analysis?<a class="anchor-link" href="#What-is-Social-Network-Analysis?">&#182;</a></h1><ul>
-<li>Definitions</li>
 <li>Examples<ul>
 <li>Zachary's Karate Club</li>
 <li>Florentine Marriages </li>
 <li>Semantic Text Network</li>
 </ul>
 </li>
+<li>Definitions</li>
 </ul>
+
+</div>
+</div>
+</div></section></section><section><section>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Examples">Examples<a class="anchor-link" href="#Examples">&#182;</a></h2><h3 id="Zachary's-Karate-Club-Network">Zachary's Karate Club Network<a class="anchor-link" href="#Zachary's-Karate-Club-Network">&#182;</a></h3><blockquote><p>The <em>Iris</em> dataset of social network analysis</p>
+</blockquote>
+<center><img src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Karate_Cuneyt_Akcora.png" width="300"></center><p>A social network of a karate club was studied by Wayne W. Zachary for a period of three years from 1970 to 1972. The network captures 34 members of a karate club, documenting 78 pairwise links between members who interacted <strong>outside</strong> the club. During the study a conflict arose which led to the split of the club into two. Based on collected data Zachary assigned correctly all but one member of the club to the groups they actually joined after the split.</p>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="15th-Century-Florentine-Marriages">15th Century Florentine Marriages<a class="anchor-link" href="#15th-Century-Florentine-Marriages">&#182;</a></h3><center><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/15th_Century_Florentine_Marriges_Data_from_Padgett_and_Ansell.pdf/page1-577px-15th_Century_Florentine_Marriges_Data_from_Padgett_and_Ansell.pdf.jpg" width="450"></center><p>[<a href="http://home.uchicago.edu/~jpadgett/papers/published/robust.pdf">Padgett and Ansell, 1993</a>]</p>
+<p>The graph above is a marriage network of 16 influential Florentian families in the 1430s.  At this time in Renaissance Italy, the major families were essentially an oligarchy, controlling politics and money in the region.</p>
+
+</div>
+</div>
+</div></section><section>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Semantic-Text-Network">Semantic Text Network<a class="anchor-link" href="#Semantic-Text-Network">&#182;</a></h3><center><img src="http://noduslabs.com/wp-content/uploads/2011/12/figure-5-meaning-circulation.png" width="400"></center><p>A network of words in a document, connected and weighted by the frequency of appearance within 2-word and 5-word windows.</p>
+<p><a href="http://noduslabs.com/research/pathways-meaning-circulation-text-network-analysis/">Paranyushkin, D. (2011). Identifying the pathways for meaning circulation using text network analysis. Berlin: Nodus Labs</a></p>
 
 </div>
 </div>
@@ -11936,40 +11970,6 @@ $ <span class="nb">source</span> activate connected
 <blockquote><p>We are talking about a(n) <strong>[unweighted/weighted]</strong> <strong>[undirected/directed]</strong> graph (with <strong>[parallel edges | self loops]</strong>).</p>
 </blockquote>
 <hr>
-
-</div>
-</div>
-</div></section></section><section><section>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Examples">Examples<a class="anchor-link" href="#Examples">&#182;</a></h2><h3 id="Zachary's-Karate-Club-Network">Zachary's Karate Club Network<a class="anchor-link" href="#Zachary's-Karate-Club-Network">&#182;</a></h3><blockquote><p>The <em>Iris</em> dataset of social network analysis</p>
-</blockquote>
-<center><img src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Karate_Cuneyt_Akcora.png" width="300"></center><p>A social network of a karate club was studied by Wayne W. Zachary for a period of three years from 1970 to 1972. The network captures 34 members of a karate club, documenting 78 pairwise links between members who interacted <strong>outside</strong> the club. During the study a conflict arose which led to the split of the club into two. Based on collected data Zachary assigned correctly all but one member of the club to the groups they actually joined after the split.</p>
-
-</div>
-</div>
-</div></section><section>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="15th-Century-Florentine-Marriages">15th Century Florentine Marriages<a class="anchor-link" href="#15th-Century-Florentine-Marriages">&#182;</a></h3><center><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/15th_Century_Florentine_Marriges_Data_from_Padgett_and_Ansell.pdf/page1-577px-15th_Century_Florentine_Marriges_Data_from_Padgett_and_Ansell.pdf.jpg" width="450"></center><p>[<a href="http://home.uchicago.edu/~jpadgett/papers/published/robust.pdf">Padgett and Ansell, 1993</a>]</p>
-<p>The graph above is a marriage network of 16 influential Florentian families in the 1430s.  At this time in Renaissance Italy, the major families were essentially an oligarchy, controlling politics and money in the region.</p>
-
-</div>
-</div>
-</div></section><section>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Semantic-Text-Network">Semantic Text Network<a class="anchor-link" href="#Semantic-Text-Network">&#182;</a></h3><center><img src="http://noduslabs.com/wp-content/uploads/2011/12/figure-5-meaning-circulation.png" width="400"></center><p>A network of words in a document, connected and weighted by the frequency of appearance within 2-word and 5-word windows.</p>
-<p><a href="http://noduslabs.com/research/pathways-meaning-circulation-text-network-analysis/">Paranyushkin, D. (2011). Identifying the pathways for meaning circulation using text network analysis. Berlin: Nodus Labs</a></p>
 
 </div>
 </div>
